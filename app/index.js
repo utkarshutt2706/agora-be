@@ -3,6 +3,8 @@ import express from "express";
 import { createServer } from "http";
 import cors from "cors";
 import healthRoutes from "./routes/healthRoute.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swagger/swagger.js";
 
 dotenv.config();
 
@@ -18,7 +20,14 @@ app.get("/", (req, res) => {
   res.send("Hello from the real time chat app");
 });
 
+// swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// health check route
 app.use("/api", healthRoutes);
+
+// other express routes
+// app.use('/api', routeFileName);
 
 httpServer.listen(port, (err) => {
   console.log(`Server running on port: ${port}`);

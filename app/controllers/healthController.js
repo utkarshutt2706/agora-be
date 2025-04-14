@@ -4,8 +4,8 @@
  */
 export const healthCheck = (req, res) => {
   res.status(200).json({
-    status: "ok",
-    message: "Server is healthy 🚀",
+    status: 'ok',
+    message: 'Server is healthy 🚀',
     timestamp: new Date().toString(),
     port: process.env.PORT || 3000,
   });

@@ -8,9 +8,9 @@ A real-time chat application built with **Node.js** using **WebSockets/Socket.IO
 
 - Real-time messaging
 - Join/leave notifications
-- Typing indicators *(optional)*
-- Room-based chat support *(optional)*
-- Responsive frontend *(React or static HTML/CSS)*
+- Typing indicators _(optional)_
+- Room-based chat support _(optional)_
+- Responsive frontend _(React or static HTML/CSS)_
 - Scalable and easy to extend
 
 ---
@@ -18,7 +18,7 @@ A real-time chat application built with **Node.js** using **WebSockets/Socket.IO
 ## 🛠️ Tech Stack
 
 - **Backend**: Node.js, Express, Socket.IO
-- **Frontend**: React *(or plain HTML/CSS/JS)*
+- **Frontend**: React _(or plain HTML/CSS/JS)_
 - **Others**: WebSocket, JavaScript, CSS
 
 ---

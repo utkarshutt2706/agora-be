@@ -1,5 +1,5 @@
-import express from "express";
-import { healthCheck } from "../controllers/healthController.js";
+import express from 'express';
+import { healthCheck } from '../controllers/healthController.js';
 
 const router = express.Router();
 
@@ -28,6 +28,6 @@ const router = express.Router();
  *                   type: string
  *                   example: "2025-04-12T12:34:56.789Z"
  */
-router.get("/health", healthCheck);
+router.get('/health', healthCheck);
 
 export default router;

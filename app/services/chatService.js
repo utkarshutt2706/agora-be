@@ -1,5 +1,20 @@
 import Message from '../models/messageModel.js';
 
+export const saveMessage = async (socketMessage) => {
+  try {
+    const message = new Message({
+      author: socketMessage.userId,
+      body: socketMessage.body,
+      date: Date.now(),
+      title: socketMessage.title,
+      roomId: socketMessage.roomId,
+    });
+    await message.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getMessagesByRoomId = async (roomId) => {
   try {
     const messages = await Message.find({ roomId });
@@ -8,16 +23,4 @@ export const getMessagesByRoomId = async (roomId) => {
   } catch (error) {
     throw error;
   }
-};
-
-export const saveMessage = async (socketMessage) => {
-  const message = new Message({
-    author: socketMessage.userId,
-    body: socketMessage.body,
-    date: Date.now(),
-    title: socketMessage.title,
-    roomId: socketMessage.roomId,
-  });
-
-  await message.save();
 };

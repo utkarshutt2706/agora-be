@@ -6,8 +6,9 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { fileURLToPath } from 'url';
 import { createMongoConnection } from './db/mongo.js';
-import chatRoutes from './routes/chatRoute.js';
-import healthRoutes from './routes/healthRoute.js';
+import chatRoutes from './routes/chatRoutes.js';
+import healthRoutes from './routes/healthRoutes.js';
+import roomRoutes from './routes/roomRoutes.js';
 import initSocketServer from './socket/socketServer.js';
 import swaggerSpec from './swagger/swagger.js';
 
@@ -38,6 +39,7 @@ app.use('/api', healthRoutes);
 
 // other express routes
 app.use('/api', chatRoutes);
+app.use('/api', roomRoutes);
 
 const server = httpServer.listen(port, (err) => {
   console.log(`Server running on port: ${port}`);

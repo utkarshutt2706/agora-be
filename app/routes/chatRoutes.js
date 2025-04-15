@@ -1,5 +1,5 @@
 import express from 'express';
-import { getMessagesByRoomId } from '../services/chatService.js';
+import { getMessagesByRoomIdHandler } from '../controllers/chatController.js';
 
 const router = express.Router();
 
@@ -80,14 +80,6 @@ const router = express.Router();
  *                   type: string
  *                   description: Error message
  */
-router.get('/messages/:roomId', async (req, res) => {
-  try {
-    const { roomId } = req.params;
-    const messages = await getMessagesByRoomId(roomId);
-    res.json(messages);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.get('/messages/:roomId', getMessagesByRoomIdHandler);
 
 export default router;

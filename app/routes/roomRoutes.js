@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllRooms } from '../services/roomService.js';
+import { getAllRoomsHandler } from '../controllers/roomController.js';
 
 const router = express.Router();
 
@@ -87,13 +87,6 @@ const router = express.Router();
  *                   type: string
  *                   description: Error message
  */
-router.get('/room/all', async (req, res) => {
-  try {
-    const rooms = await getAllRooms();
-    res.json(rooms);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.get('/room/all', getAllRoomsHandler);
 
 export default router;

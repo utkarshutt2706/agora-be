@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { fileURLToPath } from 'url';
+import { createMongoConnection } from './db/mongo.js';
 import chatRoutes from './routes/chatRoute.js';
 import healthRoutes from './routes/healthRoute.js';
 import initSocketServer from './socket/socketServer.js';
@@ -19,6 +20,8 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 const httpServer = createServer(app);
+
+await createMongoConnection();
 
 app.use(cors());
 app.use(express.json());

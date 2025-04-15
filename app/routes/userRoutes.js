@@ -1,5 +1,8 @@
 import express from 'express';
-import { createUserHandler } from '../controllers/userController.js';
+import {
+  createUserHandler,
+  getAllUserHandler,
+} from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -12,7 +15,45 @@ const router = express.Router();
 
 /**
  * @swagger
- * /user:
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - id
+ *         - username
+ *         - email
+ *         - createdAt
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The unique identifier of the user
+ *         fullName:
+ *           type: string
+ *           description: The full name of the user
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: The email of the user
+ *         password:
+ *           type: string
+ *           format: email
+ *           description: The password of the user
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: When the user account was created
+ *       example:
+ *         id: "user123"
+ *         fullName: "John Doe"
+ *         email: "john@example.com"
+ *         password: "hispassword123"
+ *         createdAt: "2023-04-10T08:15:00.000Z"
+ */
+
+/**
+ * @swagger
+ * /api/user:
  *   post:
  *     summary: Create a new user
  *     tags: [User]
@@ -66,5 +107,35 @@ const router = express.Router();
  */
 
 router.post('/user', createUserHandler);
+
+/**
+ * @swagger
+ * /api/user/all:
+ *   get:
+ *     summary: Get all users
+ *     description: Retrieve a list of all registered users
+ *     tags: [User]
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message
+ */
+
+router.get('/user/all', getAllUserHandler);
 
 export default router;

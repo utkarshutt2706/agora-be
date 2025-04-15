@@ -5,6 +5,13 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Health Check
+ *   description: Health check controller
+ */
+
+/**
+ * @swagger
  * /api/health:
  *   get:
  *     summary: Health check endpoint

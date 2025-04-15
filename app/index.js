@@ -5,8 +5,9 @@ import { createServer } from 'http';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { fileURLToPath } from 'url';
+import chatRoutes from './routes/chatRoute.js';
 import healthRoutes from './routes/healthRoute.js';
-import { initSocket } from './routes/socketRoute.js';
+import initSocketServer from './socket/socketServer.js';
 import swaggerSpec from './swagger/swagger.js';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -33,7 +34,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', healthRoutes);
 
 // other express routes
-// app.use('/api', routeFileName);
+app.use('/api', chatRoutes);
 
 const server = httpServer.listen(port, (err) => {
   console.log(`Server running on port: ${port}`);
@@ -45,4 +46,4 @@ app.get('/public', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
-initSocket(server);
+initSocketServer(server);

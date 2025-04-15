@@ -2,9 +2,15 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import { createServer } from 'http';
+import path from 'path';
 import swaggerUi from 'swagger-ui-express';
+import { fileURLToPath } from 'url';
 import healthRoutes from './routes/healthRoute.js';
+import { initSocket } from './routes/socketRoute.js';
 import swaggerSpec from './swagger/swagger.js';
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
 dotenv.config();
 
@@ -17,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello from the real time chat app');
+  res.redirect('/api-docs');
 });
 
 // swagger
@@ -29,6 +35,14 @@ app.use('/api', healthRoutes);
 // other express routes
 // app.use('/api', routeFileName);
 
-httpServer.listen(port, (err) => {
+const server = httpServer.listen(port, (err) => {
   console.log(`Server running on port: ${port}`);
 });
+
+app.use(express.static(path.resolve(__dirname, 'public')));
+
+app.get('/public', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
+
+initSocket(server);

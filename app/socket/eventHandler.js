@@ -1,4 +1,4 @@
-import { saveMessage } from '../models/messageModel.js';
+import { saveMessage } from '../services/chatService.js';
 
 export const setupEventHandlers = (io, socket) => {
   // Join a room
@@ -10,17 +10,10 @@ export const setupEventHandlers = (io, socket) => {
 
   // Send message to room
   socket.on('send_message', async (data) => {
-    console.log('Message received:', data);
-    const messageWithTimestamp = {
-      ...data,
-      timestamp: new Date().toISOString(),
-    };
-
-    // Save message to database
-    await saveMessage(data.room, messageWithTimestamp);
+    await saveMessage(data);
 
     // Broadcast to all users in the room
-    io.to(data.room).emit('receive_message', messageWithTimestamp);
+    io.to(data.room).emit('receive_message', data);
   });
 
   // User typing indicator

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getMessagesByRoomIdHandler } from '../controllers/chatController.js';
+import { getChatsByRoomIdHandler } from '../controllers/chatController.js';
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Chat
- *   description: Chat message management
+ *   description: Chats management
  */
 
 /**
@@ -18,40 +18,44 @@ const router = express.Router();
  *       type: object
  *       required:
  *         - id
- *         - user
- *         - content
+ *         - author
+ *         - body
  *         - roomId
- *         - timestamp
+ *         - date
  *       properties:
  *         id:
  *           type: string
- *           description: The auto-generated ID of the message
- *         user:
+ *           description: The auto-generated ID of the chat message
+ *         author:
  *           type: string
- *           description: The username of the sender
- *         content:
+ *           description: The ID of the message sender
+ *         body:
  *           type: string
- *           description: The content of the message
+ *           description: The main content of the chat message
+ *         title:
+ *           type: string
+ *           description: Optional title for the chat message
  *         roomId:
  *           type: string
  *           description: The ID of the chat room
- *         timestamp:
+ *         date:
  *           type: string
  *           format: date-time
- *           description: The time when the message was sent
+ *           description: The timestamp when the message was created
  *       example:
- *         id: "5f8d0f3e8b3a8b1c9c8b4567"
- *         user: "JohnDoe"
- *         content: "Hello, how are you?"
- *         roomId: "room123"
- *         timestamp: "2023-04-15T10:30:00.000Z"
+ *         id: "66178e9f8efb5e001c92abcd"
+ *         author: "66178a6b8efb5e001c927eaf"
+ *         body: "What's the plan for today?"
+ *         title: "Daily sync"
+ *         roomId: "66178ab78efb5e001c9280cd"
+ *         date: "2025-04-11T12:00:00.000Z"
  */
 
 /**
  * @swagger
- * /api/messages/{roomId}:
+ * /chats/{roomId}:
  *   get:
- *     summary: Get all messages in a specific room
+ *     summary: Get all chats in a specific room
  *     tags: [Chat]
  *     parameters:
  *       - in: path
@@ -59,10 +63,10 @@ const router = express.Router();
  *         schema:
  *           type: string
  *         required: true
- *         description: The room ID
+ *         description: The ID of the chat room
  *     responses:
  *       200:
- *         description: A list of messages in the room
+ *         description: A list of chat messages in the room
  *         content:
  *           application/json:
  *             schema:
@@ -70,7 +74,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/Message'
  *       500:
- *         description: Server error
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -78,8 +82,9 @@ const router = express.Router();
  *               properties:
  *                 error:
  *                   type: string
- *                   description: Error message
+ *                   example: No chats found for the given room ID
  */
-router.get('/messages/:roomId', getMessagesByRoomIdHandler);
+
+router.get('/chats/:roomId', getChatsByRoomIdHandler);
 
 export default router;

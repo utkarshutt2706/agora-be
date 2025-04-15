@@ -1,4 +1,4 @@
-import { saveMessage } from '../services/chatService.js';
+import { saveChat } from '../services/chatService.js';
 
 export const setupEventHandlers = (io, socket) => {
   // Join a room
@@ -10,7 +10,7 @@ export const setupEventHandlers = (io, socket) => {
 
   // Send message to room
   socket.on('send_message', async (data) => {
-    await saveMessage(data);
+    await saveChat(data);
 
     // Broadcast to all users in the room
     io.to(data.room).emit('receive_message', data);

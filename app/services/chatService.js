@@ -1,25 +1,25 @@
-import Message from '../models/messageModel.js';
+import Chat from '../models/chatModel.js';
 
-export const saveMessage = async (socketMessage) => {
+export const saveChat = async (socketMessage) => {
   try {
-    const message = new Message({
+    const chat = new Chat({
       author: socketMessage.userId,
       body: socketMessage.body,
       date: Date.now(),
       title: socketMessage.title,
       roomId: socketMessage.roomId,
     });
-    await message.save();
+    await chat.save();
   } catch (error) {
     throw error;
   }
 };
 
-export const getMessagesByRoomId = async (roomId) => {
+export const getChatsByRoomId = async (roomId) => {
   try {
-    const messages = await Message.find({ roomId });
-    if (messages && messages.length) return messages;
-    else throw new Error('No message found for the given room ID');
+    const chats = await Chat.find({ roomId });
+    if (chats && chats.length) return chats;
+    else throw new Error('No chats found for the given room ID');
   } catch (error) {
     throw error;
   }

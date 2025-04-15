@@ -19,54 +19,46 @@ const router = express.Router();
  *       required:
  *         - id
  *         - name
+ *         - author
  *         - createdAt
+ *         - active
  *       properties:
  *         id:
  *           type: string
- *           description: The auto-generated ID of the room
+ *           description: Auto-generated MongoDB ObjectId
  *         name:
  *           type: string
- *           description: The name of the chat room
- *         description:
+ *           description: Name of the chat room
+ *         author:
  *           type: string
- *           description: Optional description of the chat room
+ *           description: ID of the user who created the room
+ *         active:
+ *           type: boolean
+ *           description: Whether the room is active
  *         createdAt:
  *           type: string
  *           format: date-time
- *           description: The creation timestamp of the room
- *         createdBy:
- *           type: string
- *           description: The ID or username of the room creator
- *         participants:
- *           type: array
- *           description: List of users currently in the room
- *           items:
- *             type: string
- *         isPrivate:
- *           type: boolean
- *           description: Indicates if the room is private
- *         lastActivity:
- *           type: string
- *           format: date-time
- *           description: Timestamp of the last message in the room
+ *           description: Room creation timestamp
+ *         currentOnlineCount:
+ *           type: integer
+ *           minimum: 0
+ *           description: Number of currently online users in the room
  *       example:
- *         id: "room123"
- *         name: "General Discussion"
- *         description: "Room for general topics"
- *         createdAt: "2023-04-10T08:15:00.000Z"
- *         createdBy: "admin"
- *         participants: ["user1", "user2", "user3"]
- *         isPrivate: false
- *         lastActivity: "2023-04-15T14:22:00.000Z"
+ *         id: "643af5e9c8e7f4d1b8a9b1ab"
+ *         name: "Tech Talk"
+ *         author: "642ef5e9c8e7f4d1b8a9b199"
+ *         active: true
+ *         createdAt: "2024-04-10T08:15:00.000Z"
+ *         currentOnlineCount: 3
  */
 
 /**
  * @swagger
- * /api/room/all:
+ * /room/all:
  *   get:
  *     summary: Get all chat rooms
- *     description: Retrieve a list of all available chat rooms
  *     tags: [Room]
+ *     description: Returns a list of all available chat rooms
  *     responses:
  *       200:
  *         description: A list of chat rooms
@@ -77,7 +69,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/Room'
  *       500:
- *         description: Server error
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -85,8 +77,9 @@ const router = express.Router();
  *               properties:
  *                 error:
  *                   type: string
- *                   description: Error message
+ *                   example: No rooms found
  */
+
 router.get('/room/all', getAllRoomsHandler);
 
 export default router;

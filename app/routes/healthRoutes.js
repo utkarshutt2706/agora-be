@@ -20,13 +20,19 @@ const router = express.Router();
  *               properties:
  *                 status:
  *                   type: string
- *                   example: "ok"
+ *                   example: "200 OK ✅"
  *                 message:
  *                   type: string
- *                   example: "Server is healthy"
+ *                   example: "Server is healthy 🚀"
  *                 timestamp:
  *                   type: string
  *                   example: "2025-04-12T12:34:56.789Z"
+ *                 isMongoDbConnected:
+ *                   type: boolean
+ *                   example: true
+ *                 port:
+ *                   type: string
+ *                   example: "3000"
  */
 router.get('/health', healthCheck);
 

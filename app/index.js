@@ -9,6 +9,7 @@ import { createMongoConnection } from './db/mongo.js';
 import chatRoutes from './routes/chatRoutes.js';
 import healthRoutes from './routes/healthRoutes.js';
 import roomRoutes from './routes/roomRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import initSocketServer from './socket/socketServer.js';
 import swaggerSpec from './swagger/swagger.js';
 
@@ -40,6 +41,7 @@ app.use('/api', healthRoutes);
 // other express routes
 app.use('/api', chatRoutes);
 app.use('/api', roomRoutes);
+app.use('/api', userRoutes);
 
 const server = httpServer.listen(port, (err) => {
   console.log(`Server running on port: ${port}`);

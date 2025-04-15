@@ -7,14 +7,14 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Chat
- *   description: Chats management
+ *   description: Chat management
  */
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Message:
+ *     Chat:
  *       type: object
  *       required:
  *         - id

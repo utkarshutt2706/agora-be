@@ -2,6 +2,7 @@ import express from 'express';
 import {
   createUserHandler,
   getAllUserHandler,
+  loginUserHandler,
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -137,5 +138,60 @@ router.post('/user', createUserHandler);
  */
 
 router.get('/user/all', getAllUserHandler);
+
+/**
+ * @swagger
+ * /api/user/login:
+ *   post:
+ *     summary: Log in a user
+ *     description: Authenticate a user using email and password
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: mypassword123
+ *     responses:
+ *       200:
+ *         description: User authenticated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Invalid email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid email or password
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+router.post('/user/login', loginUserHandler);
 
 export default router;

@@ -1,15 +1,20 @@
 import Room from '../models/roomModel.js';
 
-export const createRoom = async (socketMessage) => {
+export const createRoom = async (roomData) => {
   try {
     const room = new Room({
-      author: socketMessage.userId,
-      createdAt: Date.now(),
+      name: roomData.name,
+      author: roomData.userId,
       currentOnlineCount: 0,
+      createdAt: Date.now(),
       active: true,
-      name: socketMessage.name,
     });
-    await room.save();
+    const savedRoom = await room.save();
+    if (savedRoom && savedRoom.id) {
+      return savedRoom.id;
+    } else {
+      throw new Error('An error occured while creating the room');
+    }
   } catch (error) {
     throw error;
   }

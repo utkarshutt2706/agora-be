@@ -1,5 +1,8 @@
 import express from 'express';
-import { getAllRoomsHandler } from '../controllers/roomController.js';
+import {
+  createRoomHandler,
+  getAllRoomsHandler,
+} from '../controllers/roomController.js';
 
 const router = express.Router();
 
@@ -54,7 +57,67 @@ const router = express.Router();
 
 /**
  * @swagger
- * /room/all:
+ * /api/room:
+ *   post:
+ *     summary: Create a new chat room
+ *     description: Create a new room with the provided name and creator information
+ *     tags: [Room]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - userId
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the chat room
+ *               userId:
+ *                 type: string
+ *                 description: The ID of the user creating the room
+ *             example:
+ *               name: "Random Room"
+ *               userId: "64a2b8f9c0a29d001f32abc1"
+ *     responses:
+ *       200:
+ *         description: Room created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Room created successfully
+ *       400:
+ *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Name and userId are required
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+router.post('/room', createRoomHandler);
+
+/**
+ * @swagger
+ * /api/room/all:
  *   get:
  *     summary: Get all chat rooms
  *     tags: [Room]

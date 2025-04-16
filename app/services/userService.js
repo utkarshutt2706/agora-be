@@ -9,7 +9,11 @@ export const createUser = async (userData) => {
       password: userData.password,
     });
     const savedUser = await user.save();
-    return savedUser.id;
+    if (savedUser && savedUser.id) {
+      return savedUser.id;
+    } else {
+      throw new Error('An error occured while creating the user');
+    }
   } catch (error) {
     throw error;
   }

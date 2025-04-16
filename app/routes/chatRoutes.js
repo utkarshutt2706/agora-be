@@ -53,7 +53,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /chats/{roomId}:
+ * /api/chats/{roomId}:
  *   get:
  *     summary: Get all chats in a specific room
  *     tags: [Chat]
@@ -72,7 +72,7 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Message'
+ *                 $ref: '#/components/schemas/Chat'
  *       500:
  *         description: Internal server error
  *         content:

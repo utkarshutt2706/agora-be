@@ -18,7 +18,7 @@ export const saveChat = async (socketMessage) => {
 export const getChatsByRoomId = async (roomId) => {
   try {
     const chats = await Chat.find({ roomId });
-    if (chats && chats.length) return chats;
+    if (chats && chats.length) return chats.map((chat) => chat.toJSON());
     else throw new Error('No chats found for the given room ID');
   } catch (error) {
     throw error;
@@ -28,7 +28,7 @@ export const getChatsByRoomId = async (roomId) => {
 export const getChatsByUserId = async (userId) => {
   try {
     const chats = await Chat.find({ author: userId });
-    if (chats && chats.length) return chats;
+    if (chats && chats.length) return chats.map((chat) => chat.toJSON());
     else throw new Error('No chats found for the given user ID');
   } catch (error) {
     throw error;

@@ -24,7 +24,7 @@ export const getAllRooms = async () => {
   try {
     const rooms = await Room.find();
     if (rooms && rooms.length) {
-      return rooms;
+      return rooms.map((room) => room.toJSON());
     } else {
       throw new Error('No rooms found');
     }
@@ -47,7 +47,7 @@ export const joinRoomById = async (roomId) => {
   }
 };
 
-export const toggleRoomStatus = async () => {
+export const toggleRoomStatus = async (roomId) => {
   try {
     const room = await Room.findById(roomId);
     if (room) {

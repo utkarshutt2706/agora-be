@@ -23,7 +23,12 @@ export const getAllUsers = async () => {
   try {
     const users = await User.find();
     if (users && users.length) {
-      return users;
+      const userJsonList = users.map((user) => {
+        const userJson = user.toJSON();
+        delete userJson.password;
+        return userJson;
+      });
+      return userJsonList;
     } else {
       throw new Error('No users found');
     }

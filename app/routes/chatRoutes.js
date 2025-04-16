@@ -1,5 +1,8 @@
 import express from 'express';
-import { getChatsByRoomIdHandler } from '../controllers/chatController.js';
+import {
+  getChatsByRoomIdHandler,
+  getChatsByUserIdHandler,
+} from '../controllers/chatController.js';
 
 const router = express.Router();
 
@@ -85,6 +88,52 @@ const router = express.Router();
  *                   example: No chats found for the given room ID
  */
 
-router.get('/chats/:roomId', getChatsByRoomIdHandler);
+router.get('/chats/room/:roomId', getChatsByRoomIdHandler);
+
+/**
+ * @swagger
+ * /api/chats/{userId}:
+ *   get:
+ *     summary: Get all chats by a specific user
+ *     description: Retrieve all chat messages authored by a specific user
+ *     tags: [Chat]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user
+ *     responses:
+ *       200:
+ *         description: A list of chats sent by the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Message'
+ *       404:
+ *         description: No chats found for the given user ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: No chats found for the given user ID
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+router.get('/chats/user/:userId', getChatsByUserIdHandler);
 
 export default router;

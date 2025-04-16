@@ -24,3 +24,13 @@ export const getChatsByRoomId = async (roomId) => {
     throw error;
   }
 };
+
+export const getChatsByUserId = async (userId) => {
+  try {
+    const chats = await Chat.find({ author: userId });
+    if (chats && chats.length) return chats;
+    else throw new Error('No chats found for the given user ID');
+  } catch (error) {
+    throw error;
+  }
+};

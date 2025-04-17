@@ -7,6 +7,7 @@ const roomSchema = new Schema({
   name: { type: String, unique: false, nullable: false },
   author: { type: ObjectId, unique: false, nullable: false },
   active: { type: Boolean, default: false, unique: false, nullable: false },
+  isPrivate: { type: Boolean, default: false, unique: false, nullable: false },
   currentOnlineCount: { type: Number, min: 0, unique: false, nullable: false },
   createdAt: { type: Date, default: Date.now() },
 });

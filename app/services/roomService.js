@@ -5,6 +5,7 @@ export const createRoom = async (roomData) => {
     const room = new Room({
       name: roomData.name,
       author: roomData.userId,
+      isPrivate: roomData.isPrivate,
       currentOnlineCount: 0,
       createdAt: Date.now(),
       active: true,
@@ -49,9 +50,29 @@ export const joinRoomById = async (roomId) => {
 
 export const toggleRoomStatus = async (roomId) => {
   try {
+    if (!roomId) {
+      throw new Error('Invalid room');
+    }
     const room = await Room.findById(roomId);
     if (room) {
       room.active = !room.active;
+      await room.save();
+    } else {
+      throw new Error('No room found with the given room ID');
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const toggleRoomPrivacy = async (roomId) => {
+  try {
+    if (!roomId) {
+      throw new Error('Invalid room');
+    }
+    const room = await Room.findById(roomId);
+    if (room) {
+      room.isPrivate = !room.isPrivate;
       await room.save();
     } else {
       throw new Error('No room found with the given room ID');

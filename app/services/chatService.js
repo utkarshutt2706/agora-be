@@ -17,6 +17,9 @@ export const saveChat = async (socketMessage) => {
 
 export const getChatsByRoomId = async (roomId) => {
   try {
+    if (!roomId) {
+      throw new Error('Invalid room');
+    }
     const chats = await Chat.find({ roomId });
     if (chats && chats.length) return chats.map((chat) => chat.toJSON());
     else throw new Error('No chats found for the given room ID');
@@ -27,6 +30,9 @@ export const getChatsByRoomId = async (roomId) => {
 
 export const getChatsByUserId = async (userId) => {
   try {
+    if (!userId) {
+      throw new Error('Invalid user');
+    }
     const chats = await Chat.find({ author: userId });
     if (chats && chats.length) return chats.map((chat) => chat.toJSON());
     else throw new Error('No chats found for the given user ID');

@@ -2,6 +2,8 @@ import express from 'express';
 import {
   createRoomHandler,
   getAllRoomsHandler,
+  toggleRoomPrivacyHandler,
+  toggleRoomStatusHandler,
 } from '../controllers/roomController.js';
 
 const router = express.Router();
@@ -144,5 +146,85 @@ router.post('/room', createRoomHandler);
  */
 
 router.get('/room/all', getAllRoomsHandler);
+
+/**
+ * @swagger
+ * /chats/status/{roomId}:
+ *   patch:
+ *     summary: Toggle the active status of a room
+ *     tags: [Chats]
+ *     description: Toggles the 'active' field of the room between true/false.
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the room
+ *     responses:
+ *       200:
+ *         description: Room status updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Room status updated successfully
+ *                 roomId:
+ *                   type: string
+ *       500:
+ *         description: Server error or invalid room ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+router.patch('/chats/status/:roomId', toggleRoomStatusHandler);
+
+/**
+ * @swagger
+ * /chats/privacy/{roomId}:
+ *   patch:
+ *     summary: Toggle the privacy status of a room
+ *     tags: [Chats]
+ *     description: Toggles the 'isPrivate' field of the room between true/false.
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the room
+ *     responses:
+ *       200:
+ *         description: Room privacy updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Room privacy updated successfully
+ *                 roomId:
+ *                   type: string
+ *       500:
+ *         description: Server error or invalid room ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+router.patch('/chats/privacy/:roomId', toggleRoomPrivacyHandler);
 
 export default router;

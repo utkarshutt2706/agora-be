@@ -2,6 +2,10 @@ import User from '../models/userModel.js';
 
 export const createUser = async (userData) => {
   try {
+    const existingUser = await User.find({ email: userData.email });
+    if (existingUser && existingUser.length) {
+      throw new Error('User already exists');
+    }
     const user = new User({
       createdAt: Date.now(),
       email: userData.email,

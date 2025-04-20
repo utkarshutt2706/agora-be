@@ -4,10 +4,13 @@ export const createRoom = async (roomData) => {
   try {
     const room = new Room({
       name: roomData.name,
-      author: roomData.userId,
+      description: roomData.description,
+      authorId: roomData.userId,
+      authorName: roomData.userName,
       isPrivate: roomData.isPrivate,
       currentOnlineCount: 0,
       createdAt: Date.now(),
+      updatedAt: Date.now(),
       active: true,
     });
     const savedRoom = await room.save();
@@ -39,6 +42,20 @@ export const joinRoomById = async (roomId) => {
     const room = await Room.findById(roomId);
     if (room) {
       room.currentOnlineCount = (room.currentOnlineCount || 0) + 1;
+      await room.save();
+    } else {
+      throw new Error('No room found with the given room ID');
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const leaveRoomById = async (roomId) => {
+  try {
+    const room = await Room.findById(roomId);
+    if (room) {
+      room.currentOnlineCount = (room.currentOnlineCount || 0) - 1;
       await room.save();
     } else {
       throw new Error('No room found with the given room ID');

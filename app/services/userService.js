@@ -8,6 +8,7 @@ export const createUser = async (userData) => {
     }
     const user = new User({
       createdAt: Date.now(),
+      updatedAt: Date.now(),
       email: userData.email,
       fullName: userData.fullName,
       password: userData.password,

@@ -3,11 +3,15 @@ import Chat from '../models/chatModel.js';
 export const saveChat = async (socketMessage) => {
   try {
     const chat = new Chat({
-      author: socketMessage.userId,
+      authorId: socketMessage.userId,
+      authorName: socketMessage.userName,
       body: socketMessage.body,
-      date: Date.now(),
+      type: socketMessage.type,
       title: socketMessage.title,
       roomId: socketMessage.roomId,
+      extra: socketMessage.extra,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     });
     await chat.save();
   } catch (error) {

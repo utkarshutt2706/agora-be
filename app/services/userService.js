@@ -1,11 +1,8 @@
 import brcypt from 'bcrypt';
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import userLoginSchema from '../schemas/userLoginSchema.js';
 import userRegisterSchema from '../schemas/userRegisterSchema.js';
-
-dotenv.config();
 
 export const createUser = async (userData) => {
   try {

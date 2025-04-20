@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
-
-dotenv.config();
 
 const options = {
   definition: {

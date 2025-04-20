@@ -1,8 +1,5 @@
-import dotenv from 'dotenv';
 import { expressjwt } from 'express-jwt';
 import { getUserById } from '../services/userService.js';
-
-dotenv.config();
 
 const jwt = () => {
   const secret = process.env.JWT_SECRET;
@@ -32,7 +29,7 @@ const jwt = () => {
   });
 };
 
-const isRevoked = async (req, { payload }, done) => {
+const isRevoked = async (req, { payload }) => {
   const user = await getUserById(payload.sub._id);
   req.user = payload.sub;
   if (!user) {

@@ -1,3 +1,4 @@
+import brcypt from 'bcrypt';
 import User from '../models/userModel.js';
 import userLoginSchema from '../schemas/userLoginSchema.js';
 import userRegisterSchema from '../schemas/userRegisterSchema.js';
@@ -15,6 +16,10 @@ export const createUser = async (userData) => {
     if (existingUser && existingUser.length) {
       throw new Error('User already exists');
     }
+
+    const salt = brcypt.genSaltSync(10);
+    userData.password = brcypt.hashSync(userData.password, salt);
+
     const user = new User({
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -61,12 +66,19 @@ export const loginUser = async (loginData) => {
     }
     const { email, password } = loginData;
     const user = await User.findOne({ email });
-    if (user && user.password === password) {
+
+    if (user) {
+      const isPasswordMatch = brcypt.compareSync(password, user.password);
+      if (!isPasswordMatch) {
+        throw new Error('Invalid password');
+      }
       const userJson = user.toJSON();
       delete userJson.password;
       return userJson;
     } else {
-      throw new Error('Invalid email or password');
+      throw new Error(
+        'User not found with the given email ID. Please register first'
+      );
     }
   } catch (error) {
     throw error;

@@ -1,7 +1,11 @@
 import brcypt from 'bcrypt';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import userLoginSchema from '../schemas/userLoginSchema.js';
 import userRegisterSchema from '../schemas/userRegisterSchema.js';
+
+dotenv.config();
 
 export const createUser = async (userData) => {
   try {
@@ -14,7 +18,7 @@ export const createUser = async (userData) => {
 
     const existingUser = await User.find({ email: userData.email });
     if (existingUser && existingUser.length) {
-      throw new Error('User already exists');
+      throw new Error('User with this email already exists');
     }
 
     const salt = brcypt.genSaltSync(10);
@@ -73,12 +77,32 @@ export const loginUser = async (loginData) => {
         throw new Error('Invalid password');
       }
       const userJson = user.toJSON();
+      const secret = process.env.JWT_SECRET;
+      const authToken = jwt.sign({ sub: userJson }, secret);
       delete userJson.password;
-      return userJson;
+      return { authToken };
     } else {
       throw new Error(
         'User not found with the given email ID. Please register first'
       );
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserById = async (userId) => {
+  try {
+    if (!userId) {
+      throw new Error('Invalid user');
+    }
+    const user = await User.findById(userId);
+    if (user) {
+      const userJson = user.toJSON();
+      delete userJson.password;
+      return userJson;
+    } else {
+      throw new Error('No user found with the given user ID');
     }
   } catch (error) {
     throw error;

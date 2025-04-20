@@ -1,7 +1,16 @@
 import User from '../models/userModel.js';
+import userLoginSchema from '../schemas/userLoginSchema.js';
+import userRegisterSchema from '../schemas/userRegisterSchema.js';
 
 export const createUser = async (userData) => {
   try {
+    const validateResponse = userRegisterSchema.validate(userData);
+    if (validateResponse) {
+      if (validateResponse.error) {
+        throw new Error(validateResponse.error.message);
+      }
+    }
+
     const existingUser = await User.find({ email: userData.email });
     if (existingUser && existingUser.length) {
       throw new Error('User already exists');
@@ -42,8 +51,15 @@ export const getAllUsers = async () => {
   }
 };
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (loginData) => {
   try {
+    const validateResponse = userLoginSchema.validate(loginData);
+    if (validateResponse) {
+      if (validateResponse.error) {
+        throw new Error(validateResponse.error.message);
+      }
+    }
+    const { email, password } = loginData;
     const user = await User.findOne({ email });
     if (user && user.password === password) {
       const userJson = user.toJSON();

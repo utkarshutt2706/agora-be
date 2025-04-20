@@ -10,10 +10,18 @@ export const setupEventHandlers = (io, socket) => {
 
   // Send message to room
   socket.on('send_message', async (data) => {
-    await saveChat(data);
+    try {
+      await saveChat(data);
 
-    // Broadcast to all users in the room
-    io.to(data.room).emit('receive_message', data);
+      // Broadcast to all users in the room
+      io.to(data.room).emit('receive_message', data);
+    } catch (error) {
+      // Send error message
+      socket.emit('message_error', {
+        message: 'Failed to send message. Please try again.',
+        error: error.message,
+      });
+    }
   });
 
   // User typing indicator

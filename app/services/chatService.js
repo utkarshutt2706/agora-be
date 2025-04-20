@@ -1,13 +1,20 @@
 import Chat from '../models/chatModel.js';
+import { chatSchema } from '../schemas/chatSchema.js';
 
 export const saveChat = async (socketMessage) => {
   try {
+    const validateResponse = chatSchema.validate(socketMessage);
+    if (validateResponse) {
+      if (validateResponse.error) {
+        throw new Error(validateResponse.error.message);
+      }
+    }
+
     const chat = new Chat({
-      authorId: socketMessage.userId,
-      authorName: socketMessage.userName,
+      authorId: socketMessage.authorId,
+      authorName: socketMessage.authorName,
       body: socketMessage.body,
       type: socketMessage.type,
-      title: socketMessage.title,
       roomId: socketMessage.roomId,
       extra: socketMessage.extra,
       createdAt: Date.now(),

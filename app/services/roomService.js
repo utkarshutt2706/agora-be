@@ -1,7 +1,15 @@
 import Room from '../models/roomModel.js';
+import roomSchema from '../schemas/roomSchema.js';
 
 export const createRoom = async (roomData) => {
   try {
+    const validateResponse = roomSchema.validate(roomData);
+    if (validateResponse) {
+      if (validateResponse.error) {
+        throw new Error(validateResponse.error.message);
+      }
+    }
+
     const room = new Room({
       name: roomData.name,
       description: roomData.description,

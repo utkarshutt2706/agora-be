@@ -1,20 +1,18 @@
 import Room from '../models/roomModel.js';
 import roomSchema from '../schemas/roomSchema.js';
 
-export const createRoom = async (roomData) => {
+export const createRoom = async (roomData, user) => {
   try {
     const validateResponse = roomSchema.validate(roomData);
-    if (validateResponse) {
-      if (validateResponse.error) {
-        throw new Error(validateResponse.error.message);
-      }
+    if (validateResponse && validateResponse.error) {
+      throw new Error(validateResponse.error.message);
     }
 
     const room = new Room({
+      authorId: user._id,
+      authorName: user.fullName,
       name: roomData.name,
       description: roomData.description,
-      authorId: roomData.userId,
-      authorName: roomData.userName,
       isPrivate: roomData.isPrivate,
       currentOnlineCount: 0,
       createdAt: Date.now(),
@@ -22,11 +20,8 @@ export const createRoom = async (roomData) => {
       active: true,
     });
     const savedRoom = await room.save();
-    if (savedRoom && savedRoom.id) {
-      return savedRoom.id;
-    } else {
-      throw new Error('An error occured while creating the room');
-    }
+    if (savedRoom && savedRoom.id) return savedRoom.id;
+    else throw new Error('An error occured while creating the room');
   } catch (error) {
     throw error;
   }
@@ -35,11 +30,8 @@ export const createRoom = async (roomData) => {
 export const getAllRooms = async () => {
   try {
     const rooms = await Room.find();
-    if (rooms && rooms.length) {
-      return rooms.map((room) => room.toJSON());
-    } else {
-      throw new Error('No rooms found');
-    }
+    if (rooms) return rooms.map((room) => room.toJSON());
+    else throw new Error('No rooms found');
   } catch (error) {
     throw error;
   }

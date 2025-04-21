@@ -1,18 +1,16 @@
 import Chat from '../models/chatModel.js';
 import { chatSchema } from '../schemas/chatSchema.js';
 
-export const saveChat = async (socketMessage) => {
+export const saveChat = async (socketMessage, user) => {
   try {
     const validateResponse = chatSchema.validate(socketMessage);
-    if (validateResponse) {
-      if (validateResponse.error) {
-        throw new Error(validateResponse.error.message);
-      }
+    if (validateResponse && validateResponse.error) {
+      throw new Error(validateResponse.error.message);
     }
 
     const chat = new Chat({
-      authorId: socketMessage.authorId,
-      authorName: socketMessage.authorName,
+      authorId: user._id,
+      authorName: user.fullName,
       body: socketMessage.body,
       type: socketMessage.type,
       roomId: socketMessage.roomId,
@@ -32,7 +30,7 @@ export const getChatsByRoomId = async (roomId) => {
       throw new Error('Invalid room');
     }
     const chats = await Chat.find({ roomId });
-    if (chats && chats.length) return chats.map((chat) => chat.toJSON());
+    if (chats) return chats.map((chat) => chat.toJSON());
     else throw new Error('No chats found for the given room ID');
   } catch (error) {
     throw error;
@@ -45,7 +43,7 @@ export const getChatsByUserId = async (userId) => {
       throw new Error('Invalid user');
     }
     const chats = await Chat.find({ author: userId });
-    if (chats && chats.length) return chats.map((chat) => chat.toJSON());
+    if (chats) return chats.map((chat) => chat.toJSON());
     else throw new Error('No chats found for the given user ID');
   } catch (error) {
     throw error;

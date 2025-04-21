@@ -7,10 +7,8 @@ import userRegisterSchema from '../schemas/userRegisterSchema.js';
 export const createUser = async (userData) => {
   try {
     const validateResponse = userRegisterSchema.validate(userData);
-    if (validateResponse) {
-      if (validateResponse.error) {
-        throw new Error(validateResponse.error.message);
-      }
+    if (validateResponse && validateResponse.error) {
+      throw new Error(validateResponse.error.message);
     }
 
     const existingUser = await User.find({ email: userData.email });
@@ -60,11 +58,10 @@ export const getAllUsers = async () => {
 export const loginUser = async (loginData) => {
   try {
     const validateResponse = userLoginSchema.validate(loginData);
-    if (validateResponse) {
-      if (validateResponse.error) {
-        throw new Error(validateResponse.error.message);
-      }
+    if (validateResponse && validateResponse.error) {
+      throw new Error(validateResponse.error.message);
     }
+
     const { email, password } = loginData;
     const user = await User.findOne({ email });
 
@@ -74,9 +71,9 @@ export const loginUser = async (loginData) => {
         throw new Error('Invalid password');
       }
       const userJson = user.toJSON();
+      delete userJson.password;
       const secret = process.env.JWT_SECRET;
       const authToken = jwt.sign({ sub: userJson }, secret);
-      delete userJson.password;
       return { authToken };
     } else {
       throw new Error(

@@ -11,7 +11,7 @@ export const setupEventHandlers = (io, socket) => {
   // Send message to room
   socket.on('send_message', async (data) => {
     try {
-      await saveChat(data);
+      await saveChat(data, socket.user);
 
       // Broadcast to all users in the room
       io.to(data.room).emit('receive_message', data);

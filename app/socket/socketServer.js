@@ -19,7 +19,7 @@ const setupSocketServer = (httpServer) => {
           if (err) {
             return next(new Error('Socket authentication failed'));
           }
-          socket.decoded = decoded;
+          socket.user = decoded.sub;
           next();
         }
       );

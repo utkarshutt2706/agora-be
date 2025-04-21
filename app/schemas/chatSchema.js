@@ -1,14 +1,6 @@
 import Joi from 'joi';
 
 export const chatSchema = Joi.object({
-  authorId: Joi.string().required().messages({
-    'string.base': 'Author ID must be a string',
-    'any.required': 'Author ID is required',
-  }),
-  authorName: Joi.string().required().messages({
-    'string.base': 'Author name must be a string',
-    'any.required': 'Author name is required',
-  }),
   body: Joi.string().required().messages({
     'string.base': 'Body must be a string',
     'any.required': 'Body is required',

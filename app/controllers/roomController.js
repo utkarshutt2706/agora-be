@@ -24,7 +24,7 @@ export const getAllRoomsHandler = async (_, res) => {
  */
 export const createRoomHandler = async (req, res) => {
   try {
-    const roomId = await createRoom(req.body);
+    const roomId = await createRoom(req.body, req.user);
     res.status(200).json({ message: 'Room created successfully', roomId });
   } catch (error) {
     res.status(500).json({ error: error.message });

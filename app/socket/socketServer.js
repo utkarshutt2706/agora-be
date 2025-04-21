@@ -11,9 +11,9 @@ const setupSocketServer = (httpServer) => {
   });
 
   io.use((socket, next) => {
-    if (socket.handshake.query && socket.handshake.query.token) {
+    if (socket.handshake.auth && socket.handshake.auth.token) {
       jwt.verify(
-        socket.handshake.query.token,
+        socket.handshake.auth.token,
         process.env.JWT_SECRET,
         (err, decoded) => {
           if (err) {
@@ -27,8 +27,6 @@ const setupSocketServer = (httpServer) => {
       next(new Error('Socket authentication failed'));
     }
   }).on('connection', (socket) => {
-    console.log('New client connected:', socket.id);
-
     // Setup all event handlers
     setupEventHandlers(io, socket);
   });

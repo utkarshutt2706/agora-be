@@ -28,8 +28,8 @@ A real-time chat application built with **Node.js** using **WebSockets/Socket.IO
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/utkarshutt2706/chat-app-node.git
-cd chat-app-node
+git clone https://github.com/utkarshutt2706/agora-be.git
+cd agora-be
 ```
 
 ### 2. Install dependencies

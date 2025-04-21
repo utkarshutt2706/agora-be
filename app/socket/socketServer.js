@@ -5,7 +5,7 @@ import { setupEventHandlers } from './eventHandler.js';
 const setupSocketServer = (httpServer) => {
   const io = new Server(httpServer, {
     cors: {
-      origin: process.env.CLIENT_URL || 'http://localhost:5173',
+      origin: process.env.CLIENT_URL || 'http://172.20.10.12:5173',
       methods: ['GET', 'POST'],
     },
   });

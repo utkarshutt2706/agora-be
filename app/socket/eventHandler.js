@@ -45,9 +45,14 @@ export const setupEventHandlers = (io, socket) => {
     }
   });
 
-  // User typing indicator
-  socket.on('typing', (data) => {
-    socket.to(data.room).emit('user_typing', data);
+  // Typing indicator - start
+  socket.on('typing_start', (roomId) => {
+    socket.to(roomId).emit('user_typing_start', socket.user.fullName);
+  });
+
+  // Typing indicator - end
+  socket.on('typing_end', (roomId) => {
+    socket.to(roomId).emit('user_typing_end', socket.user.fullName);
   });
 
   // Handle disconnection

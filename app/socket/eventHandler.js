@@ -3,10 +3,10 @@ import { joinRoomById } from '../services/roomService.js';
 
 export const setupEventHandlers = (io, socket) => {
   // Join a room
-  socket.on('join_room', (roomId) => {
+  socket.on('join_room', async (roomId) => {
     try {
       socket.join(roomId);
-      joinRoomById(roomId);
+      await joinRoomById(roomId);
       io.to(roomId).emit('user_connected', socket.id);
     } catch (error) {
       socket.emit('join_error', {
@@ -30,12 +30,13 @@ export const setupEventHandlers = (io, socket) => {
   });
 
   // Send message to room
-  socket.on('send_message', async (data) => {
+  socket.on('send_message', async (chatRequest) => {
     try {
-      await saveChat(data, socket.user);
+      const chat = await saveChat(chatRequest, socket.user);
 
       // Broadcast to all users in the room
-      io.to(data.room).emit('receive_message', data);
+      io.to(chatRequest.roomId).emit('receive_message', chat);
+      socket.emit('message_sent');
     } catch (error) {
       // Send error message
       socket.emit('message_error', {

@@ -27,8 +27,8 @@ export const createUser = async (userData) => {
       password: userData.password,
     });
     const savedUser = await user.save();
-    if (savedUser && savedUser.id) {
-      return savedUser.id;
+    if (savedUser && savedUser.fullName) {
+      return savedUser.fullName;
     } else {
       throw new Error('An error occured while creating the user', {
         cause: 500,

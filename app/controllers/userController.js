@@ -6,10 +6,12 @@ import { createUser, getAllUsers, loginUser } from '../services/userService.js';
  */
 export const createUserHandler = async (req, res) => {
   try {
-    const userId = await createUser(req.body);
+    const userFullName = await createUser(req.body);
     res.status(200).json({
-      message: 'User created successfully. Please proceed with login.',
-      userId,
+      userFullName,
+      message: `Welcome ${
+        userFullName || 'user'
+      } to Agora! Please proceed with login.`,
     });
   } catch (error) {
     res.status(error.cause || 500).json({ error: error.message });

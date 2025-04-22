@@ -18,7 +18,14 @@ export const saveChat = async (socketMessage, user) => {
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
-    await chat.save();
+    const savedChat = await chat.save();
+    if (savedChat) {
+      return savedChat.toJSON();
+    } else {
+      throw new Error('An error occured while saving the chat', {
+        cause: 500,
+      });
+    }
   } catch (error) {
     throw error;
   }
@@ -29,7 +36,7 @@ export const getChatsByRoomId = async (roomId) => {
     if (!roomId) {
       throw new Error('Invalid room ID', { cause: 400 });
     }
-    const chats = await Chat.find({ roomId });
+    const chats = await Chat.find({ roomId }).sort({ createdAt: 1 });
     if (chats) return chats.map((chat) => chat.toJSON());
     else
       throw new Error('No chats found for the given room ID', { cause: 404 });

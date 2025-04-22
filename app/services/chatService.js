@@ -5,7 +5,7 @@ export const saveChat = async (socketMessage, user) => {
   try {
     const validateResponse = chatSchema.validate(socketMessage);
     if (validateResponse && validateResponse.error) {
-      throw new Error(validateResponse.error.message);
+      throw new Error(validateResponse.error.message, { cause: 400 });
     }
 
     const chat = new Chat({
@@ -27,11 +27,12 @@ export const saveChat = async (socketMessage, user) => {
 export const getChatsByRoomId = async (roomId) => {
   try {
     if (!roomId) {
-      throw new Error('Invalid room');
+      throw new Error('Invalid room ID', { cause: 400 });
     }
     const chats = await Chat.find({ roomId });
     if (chats) return chats.map((chat) => chat.toJSON());
-    else throw new Error('No chats found for the given room ID');
+    else
+      throw new Error('No chats found for the given room ID', { cause: 404 });
   } catch (error) {
     throw error;
   }
@@ -40,11 +41,12 @@ export const getChatsByRoomId = async (roomId) => {
 export const getChatsByUserId = async (userId) => {
   try {
     if (!userId) {
-      throw new Error('Invalid user');
+      throw new Error('Invalid user ID', { cause: 400 });
     }
     const chats = await Chat.find({ author: userId });
     if (chats) return chats.map((chat) => chat.toJSON());
-    else throw new Error('No chats found for the given user ID');
+    else
+      throw new Error('No chats found for the given user ID', { cause: 404 });
   } catch (error) {
     throw error;
   }

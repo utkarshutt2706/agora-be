@@ -30,12 +30,16 @@ const jwt = () => {
 };
 
 const isRevoked = async (req, { payload }) => {
-  const user = await getUserById(payload.sub._id);
-  req.user = payload.sub;
-  if (!user) {
+  try {
+    const user = await getUserById(payload.sub._id);
+    req.user = payload.sub;
+    if (!user) {
+      return true;
+    }
+    return false;
+  } catch (error) {
     return true;
   }
-  return false;
 };
 
 export default jwt;

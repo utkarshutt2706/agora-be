@@ -14,7 +14,7 @@ export const getAllRoomsHandler = async (_, res) => {
     const rooms = await getAllRooms();
     res.status(200).json(rooms);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };
 
@@ -27,7 +27,7 @@ export const createRoomHandler = async (req, res) => {
     const roomId = await createRoom(req.body, req.user);
     res.status(200).json({ message: 'Room created successfully', roomId });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };
 
@@ -43,7 +43,7 @@ export const toggleRoomStatusHandler = async (req, res) => {
       .status(200)
       .json({ message: 'Room status updated successfully', roomId });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };
 
@@ -59,6 +59,6 @@ export const toggleRoomPrivacyHandler = async (req, res) => {
       .status(200)
       .json({ message: 'Room privacy updated successfully', roomId });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };

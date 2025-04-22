@@ -10,7 +10,7 @@ export const getChatsByRoomIdHandler = async (req, res) => {
     const chats = await getChatsByRoomId(roomId);
     res.json(chats);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };
 
@@ -20,6 +20,6 @@ export const getChatsByUserIdHandler = async (req, res) => {
     const chats = await getChatsByUserId(userId);
     res.json(chats);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };

@@ -12,7 +12,7 @@ export const createUserHandler = async (req, res) => {
       userId,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };
 
@@ -25,7 +25,7 @@ export const getAllUserHandler = async (_, res) => {
     const users = await getAllUsers();
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };
 
@@ -38,6 +38,6 @@ export const loginUserHandler = async (req, res) => {
     const user = await loginUser(req.body);
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.cause || 500).json({ error: error.message });
   }
 };

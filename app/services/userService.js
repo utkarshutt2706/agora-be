@@ -8,12 +8,12 @@ export const createUser = async (userData) => {
   try {
     const validateResponse = userRegisterSchema.validate(userData);
     if (validateResponse && validateResponse.error) {
-      throw new Error(validateResponse.error.message);
+      throw new Error(validateResponse.error.message, { cause: 400 });
     }
 
     const existingUser = await User.find({ email: userData.email });
     if (existingUser && existingUser.length) {
-      throw new Error('User with this email already exists');
+      throw new Error('User with this email already exists', { cause: 400 });
     }
 
     const salt = brcypt.genSaltSync(10);
@@ -30,7 +30,9 @@ export const createUser = async (userData) => {
     if (savedUser && savedUser.id) {
       return savedUser.id;
     } else {
-      throw new Error('An error occured while creating the user');
+      throw new Error('An error occured while creating the user', {
+        cause: 500,
+      });
     }
   } catch (error) {
     throw error;
@@ -40,7 +42,7 @@ export const createUser = async (userData) => {
 export const getAllUsers = async () => {
   try {
     const users = await User.find();
-    if (users && users.length) {
+    if (users) {
       const userJsonList = users.map((user) => {
         const userJson = user.toJSON();
         delete userJson.password;
@@ -48,7 +50,7 @@ export const getAllUsers = async () => {
       });
       return userJsonList;
     } else {
-      throw new Error('No users found');
+      throw new Error('No users found', { cause: 404 });
     }
   } catch (error) {
     throw error;
@@ -59,7 +61,7 @@ export const loginUser = async (loginData) => {
   try {
     const validateResponse = userLoginSchema.validate(loginData);
     if (validateResponse && validateResponse.error) {
-      throw new Error(validateResponse.error.message);
+      throw new Error(validateResponse.error.message, { cause: 400 });
     }
 
     const { email, password } = loginData;
@@ -68,7 +70,7 @@ export const loginUser = async (loginData) => {
     if (user) {
       const isPasswordMatch = brcypt.compareSync(password, user.password);
       if (!isPasswordMatch) {
-        throw new Error('Invalid password');
+        throw new Error('Invalid password', { cause: 403 });
       }
       const userJson = user.toJSON();
       delete userJson.password;
@@ -77,7 +79,10 @@ export const loginUser = async (loginData) => {
       return { authToken };
     } else {
       throw new Error(
-        'User not found with the given email ID. Please register first'
+        'User not found with the given email ID. Please register first',
+        {
+          cause: 404,
+        }
       );
     }
   } catch (error) {
@@ -88,7 +93,7 @@ export const loginUser = async (loginData) => {
 export const getUserById = async (userId) => {
   try {
     if (!userId) {
-      throw new Error('Invalid user');
+      throw new Error('Invalid user ID', { cause: 400 });
     }
     const user = await User.findById(userId);
     if (user) {
@@ -96,7 +101,7 @@ export const getUserById = async (userId) => {
       delete userJson.password;
       return userJson;
     } else {
-      throw new Error('No user found with the given user ID');
+      throw new Error('No user found with the given user ID', { cause: 404 });
     }
   } catch (error) {
     throw error;

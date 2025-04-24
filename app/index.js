@@ -52,7 +52,7 @@ app.use('/api', chatRoutes);
 app.use('/api', roomRoutes);
 app.use('/api', userRoutes);
 
-const server = httpServer.listen(port, '172.20.10.12', (err) => {
+const server = httpServer.listen(port, process.env.LOCAL_IP, () => {
   console.log(`Server running on port: ${port}`);
 });
 

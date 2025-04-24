@@ -34,14 +34,15 @@ export const setupEventHandlers = (io, socket) => {
     try {
       const chat = await saveChat(chatRequest, socket.user);
 
-      // Broadcast to all users in the room
-      io.to(chatRequest.roomId).emit('receive_message', chat);
-      socket.emit('message_sent');
+      // Broadcast to all users in the room except the one sending the message
+      socket.to(chatRequest.roomId).emit('receive_message', chat);
+      socket.emit('message_sent', chat);
     } catch (error) {
       // Send error message
       socket.emit('message_error', {
         message: 'Failed to send message. Please try again.',
         error: error.message,
+        chat: chatRequest,
       });
     }
   });

@@ -15,5 +15,6 @@
   "prettier.singleQuote": true,
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
-  "yaml.format.singleQuote": true
+  "yaml.format.singleQuote": true,
+  "prettier.tabWidth": 4
 }

@@ -59,3 +59,5 @@ const server = httpServer.listen(port, () => {
 });
 
 initSocketServer(server);
+
+module.exports = app;

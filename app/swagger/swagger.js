@@ -15,6 +15,20 @@ const options = {
                     `http://localhost:${process.env.PORT || 3000}`,
             },
         ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT', // Optional: for documentation only
+                },
+            },
+        },
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
     },
     apis: ['./app/routes/*.js'], // Files containing Swagger annotations
 };

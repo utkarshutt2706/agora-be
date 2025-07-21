@@ -30,7 +30,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (_, res) => {
-  res.redirect('/api-docs');
+    res.redirect('/api-docs');
 });
 
 // swagger
@@ -39,12 +39,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // health check route
 app.use('/api', healthRoutes);
 
+app.use(express.static(path.resolve(__dirname, 'public')));
+
 app.use(jwt());
 app.use((error, _, res, next) => {
-  if (error.name === 'UnauthorizedError') {
-    return res.status(401).json({ error: '401 Unauthorized' });
-  }
-  next(error);
+    if (error.name === 'UnauthorizedError') {
+        return res.status(401).json({ error: '401 Unauthorized' });
+    }
+    next(error);
 });
 
 // other express routes
@@ -52,14 +54,8 @@ app.use('/api', chatRoutes);
 app.use('/api', roomRoutes);
 app.use('/api', userRoutes);
 
-const server = httpServer.listen(port, process.env.LOCAL_IP, () => {
-  console.log(`Server running on port: ${port}`);
-});
-
-app.use(express.static(path.resolve(__dirname, 'public')));
-
-app.get('/public', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+const server = httpServer.listen(port, () => {
+    console.log(`Server running on port: ${port}`);
 });
 
 initSocketServer(server);
